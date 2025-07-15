@@ -19,16 +19,20 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: ResponsiveHelper.width(width),
-        height: ResponsiveHelper.height(45),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(ResponsiveHelper.width(16)),
-          color: AppColor.primaryColor,
-        ),
-        child: Text(
-          buttonTitle,
-          style: headlineText(16, AppColor.whiteColor, null),
+      child: Material(
+        child: Container(
+          width: ResponsiveHelper.width(width),
+          height: ResponsiveHelper.height(45),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(ResponsiveHelper.width(16)),
+            color: AppColor.primaryColor,
+          ),
+          child: Center(
+            child: Text(
+              buttonTitle,
+              style: headlineText(16, AppColor.whiteColor, null),
+            ),
+          ),
         ),
       ),
     );

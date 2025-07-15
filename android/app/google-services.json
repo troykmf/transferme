@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "384302714028",
+    "project_id": "transferme-44e4a",
+    "storage_bucket": "transferme-44e4a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384302714028:android:85f1a739c239f4c4d6e309",
+        "android_client_info": {
+          "package_name": "com.example.transferme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZemegKHE2W8Fx8yfW2A1IqdHmVUZfRyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

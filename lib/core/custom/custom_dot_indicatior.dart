@@ -20,11 +20,11 @@ class CustomDotIndicatior extends StatelessWidget {
         (index) => AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           margin: EdgeInsets.symmetric(
-            horizontal: ResponsiveHelper.width(1),
+            horizontal: ResponsiveHelper.width(3),
             vertical: ResponsiveHelper.height(2),
           ),
-          width: ResponsiveHelper.width(1.5),
-          height: ResponsiveHelper.height(1.5),
+          width: ResponsiveHelper.width(5),
+          height: ResponsiveHelper.height(5),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: index == currentIndex

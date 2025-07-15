@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:transferme/core/custom/custom_app_logo.dart';
+import 'package:transferme/core/custom/custom_button.dart';
 import 'package:transferme/core/custom/custom_responsive_widgets.dart';
 import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/core/util/app_responsive_helper.dart';
@@ -62,16 +63,21 @@ class WelcomeScreen extends StatelessWidget {
             ],
           ),
           Gap(120),
-          ResponsiveButton(
-            text: 'Get Started',
-            width: 201,
-            onPressed: () {
+          CustomButton(
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => OnboardingScreen()),
               );
             },
+            width: 201,
+            buttonTitle: 'Get Started',
           ),
+          // ResponsiveButton(
+          //   text:,
+          //   width: 201,
+          //   onPressed:
+          // ),
           Gap(120),
         ],
       ),

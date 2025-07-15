@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
+import 'package:transferme/core/custom/custom_button.dart';
 import 'package:transferme/core/custom/custom_dot_indicatior.dart';
 import 'package:transferme/core/custom/custom_responsive_widgets.dart';
 import 'package:transferme/core/util/app_color.dart';
@@ -38,7 +40,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: PageView.builder(
         controller: _pageController,
         itemCount: onboardingPages.length,
-
         onPageChanged: (value) => setState(() => _currentPage = value),
         itemBuilder: (context, index) {
           final data = onboardingPages[index];
@@ -46,20 +47,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             child: ResponsivePadding(
               child: Column(
                 children: [
+                  Gap(30),
+
                   // image
-                  SvgPicture.asset(data.image),
+                  SizedBox(height: 350, child: SvgPicture.asset(data.image)),
+
+                  Gap(10),
 
                   // title
                   Text(
+                    textAlign: TextAlign.center,
                     data.title,
-                    style: headlineText(30, AppColor.blackColor, null),
+                    style: extraBoldText(30, AppColor.blackColor, null),
                   ),
+
+                  Gap(20),
 
                   // subtitle
                   Text(
-                    data.title,
-                    style: mediumText(11, AppColor.blackColor, null),
+                    textAlign: TextAlign.center,
+                    data.subtitle,
+                    style: mediumText(12, AppColor.textLightGreyColor, null),
                   ),
+
+                  Gap(50),
 
                   // dot indicator
                   CustomDotIndicatior(
@@ -67,8 +78,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     count: onboardingPages.length,
                   ),
 
-                  // button
+                  Gap(40),
 
+                  // button
+                  CustomButton(
+                    onTap: () {
+                      _nextPage();
+                    },
+                    width: 201,
+                    buttonTitle: 'Continue',
+                  ),
                 ],
               ),
             ),

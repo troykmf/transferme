@@ -39,6 +39,10 @@ dependencies:
   google_fonts: ^4.0.4
   gap: ^3.0.1
   flutter_svg: ^2.0.9
+  firebase_auth: ^5.6.2
+  firebase_core: ^3.15.1
+  cloud_firestore: ^5.6.11
+  firebase_analytics: ^11.5.2
 
 dev_dependencies:
   flutter_test:
@@ -89,7 +93,7 @@ flutter:
           weight: 400
         - asset: fonts/SFUIText-Semibold.otf
           weight: 500
-        - asset: font/SFUIText-Regular.otf
+        - asset: fonts/SFUIText-Regular.otf
           weight: 400
          
     # - family: Trajan Pro
