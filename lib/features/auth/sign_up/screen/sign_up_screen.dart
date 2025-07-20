@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:transferme/core/custom/custom_app_logo.dart';
+import 'package:transferme/core/custom/custom_button.dart';
 import 'package:transferme/core/custom/custom_responsive_widgets.dart';
 import 'package:transferme/core/custom/custom_textfield.dart';
 import 'package:transferme/core/util/app_color.dart';
@@ -29,6 +30,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     _passwordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
   }
+
+  void _handleSignUp() {}
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +99,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 CustomTextfield(
                   text: 'Password',
                   controller: _passwordController,
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       onPressed: () {},
@@ -131,7 +134,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 CustomTextfield(
                   text: 'Confirm Password',
                   controller: _confirmPasswordController,
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       onPressed: () {},
@@ -161,6 +164,40 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   ),
                   obscureText: false,
                   autocorrect: false,
+                ),
+                Gap(50),
+                Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: [
+                      CustomButton(
+                        onTap: () {},
+                        width: 201,
+                        buttonTitle: 'Sign Up',
+                      ),
+                      Gap(30),
+                      RichText(
+                        text: TextSpan(
+                          style: mediumText(
+                            13,
+                            AppColor.textLightGreyColor,
+                            null,
+                          ),
+                          children: [
+                            TextSpan(text: 'Already have an account? '),
+                            TextSpan(
+                              text: 'Login',
+                              style: mediumText(
+                                13,
+                                AppColor.primaryColor,
+                                null,
+                              ).copyWith(decoration: TextDecoration.underline),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
