@@ -37,8 +37,10 @@ class HelperDialogs {
             Text(error.message),
             if (error.code.isNotEmpty) ...[
               SizedBox(height: 8),
-              Text('Error Code: ${error.code}', 
-                   style: TextStyle(fontSize: 12, color: Colors.grey)),
+              Text(
+                'Error Code: ${error.code}',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ],
           ],
         ),
@@ -51,7 +53,7 @@ class HelperDialogs {
             onPressed: () {
               Navigator.of(context).pop();
               // Show detailed error for debugging
-              print(error.getDetailedError());
+              debugPrint(error.message);
             },
             child: Text('Debug Info'),
           ),

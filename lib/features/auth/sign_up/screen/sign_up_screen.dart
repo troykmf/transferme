@@ -207,3 +207,196 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     );
   }
 }
+
+
+// USAGE EXAMPLES AND EXPLANATIONS
+
+// /// Example 1: Basic Authentication Widget
+// class AuthExampleWidget extends StatefulWidget {
+//   @override
+//   _AuthExampleWidgetState createState() => _AuthExampleWidgetState();
+// }
+
+// class _AuthExampleWidgetState extends State<AuthExampleWidget> {
+//   final AuthState _authState = AuthState();
+//   final TextEditingController _emailController = TextEditingController();
+//   final TextEditingController _passwordController = TextEditingController();
+
+//   @override
+//   void dispose() {
+//     _emailController.dispose();
+//     _passwordController.dispose();
+//     super.dispose();
+//   }
+
+//   /// Example of how to handle signup with proper error handling
+//   Future<void> _handleSignUp() async {
+//     try {
+//       User? user = await _authState.signUp(
+//         _emailController.text,
+//         _passwordController.text,
+//         context: context,
+//       );
+      
+//       if (user != null) {
+//         // Show success message
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(
+//             content: Text('Account created! Please check your email for verification.'),
+//             backgroundColor: Colors.green,
+//           ),
+//         );
+//       }
+//     } on AuthException catch (e) {
+//       // Error handling is already done in the AuthState class
+//       // The error dialog will be shown automatically
+//       print('Signup failed: ${e.message}');
+//     }
+//   }
+
+//   /// Example of how to handle login with email verification check
+//   Future<void> _handleLogin() async {
+//     try {
+//       User? user = await _authState.login(
+//         _emailController.text,
+//         _passwordController.text,
+//         context: context,
+//         requireEmailVerification: true, // Enforce email verification
+//       );
+      
+//       if (user != null) {
+//         // Navigate to home screen or show success message
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(
+//             content: Text('Login successful!'),
+//             backgroundColor: Colors.green,
+//           ),
+//         );
+//       }
+//     } on AuthException catch (e) {
+//       // Error handling is already done in the AuthState class
+//       print('Login failed: ${e.message}');
+//     }
+//   }
+
+//   /// Example of how to handle profile picture upload
+//   Future<void> _handleProfilePictureUpload() async {
+//     try {
+//       final ImagePicker picker = ImagePicker();
+//       final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      
+//       if (image != null) {
+//         String? downloadUrl = await _authState.uploadProfilePicture(
+//           image,
+//           context: context,
+//         );
+        
+//         if (downloadUrl != null) {
+//           print('Profile picture uploaded successfully: $downloadUrl');
+//         }
+//       }
+//     } on AuthException catch (e) {
+//       print('Profile picture upload failed: ${e.message}');
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('Firebase Auth Example')),
+//       body: Padding(
+//         padding: EdgeInsets.all(16.0),
+//         children: [
+//           TextField(
+//             controller: _emailController,
+//             decoration: InputDecoration(labelText: 'Email'),
+//           ),
+//           TextField(
+//             controller: _passwordController,
+//             decoration: InputDecoration(labelText: 'Password'),
+//             obscureText: true,
+//           ),
+//           SizedBox(height: 20),
+//           ElevatedButton(
+//             onPressed: _authState.isLoading ? null : _handleSignUp,
+//             child: Text('Sign Up'),
+//           ),
+//           ElevatedButton(
+//             onPressed: _authState.isLoading ? null : _handleLogin,
+//             child: Text('Login'),
+//           ),
+//           ElevatedButton(
+//             onPressed: _authState.isLoading ? null : () async {
+//               await _authState.sendEmailVerification(context: context);
+//             },
+//             child: Text('Resend Verification Email'),
+//           ),
+//           ElevatedButton(
+//             onPressed: _authState.isLoading ? null : _handleProfilePictureUpload,
+//             child: Text('Upload Profile Picture'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+/*
+DETAILED EXPLANATION OF THE CODE:
+
+1. **AuthException Class**:
+   - Custom exception class that extends Exception
+   - Includes Firebase-specific error handling with user-friendly messages
+   - Provides detailed error information including stack traces
+   - Factory constructor to easily create from FirebaseAuthException
+
+2. **AuthState Class**:
+   - Extends ChangeNotifier for state management
+   - Handles all authentication operations (login, signup, email verification, profile upload)
+   - Includes comprehensive error handling with loading and error dialogs
+   - Implements email verification enforcement
+
+3. **Key Features**:
+
+   **Error Handling**:
+   - Stack traces are captured and included in custom exceptions
+   - Loading dialogs are shown during async operations
+   - Error dialogs display user-friendly messages with debug information
+   - All Firebase errors are converted to user-friendly messages
+
+   **Email Verification**:
+   - Automatically sends verification email after signup
+   - Prevents login until email is verified (configurable)
+   - Provides method to resend verification emails
+   - Includes methods to check verification status
+
+   **Profile Picture Upload**:
+   - Uses Firebase Storage to upload images
+   - Updates user profile with photo URL
+   - Includes proper error handling and progress indication
+   - Supports metadata for uploaded files
+
+   **State Management**:
+   - Uses ChangeNotifier pattern for reactive UI updates
+   - Provides getters for current user, loading state, and errors
+   - Automatically listens to auth state changes
+
+4. **Required Dependencies** (add to pubspec.yaml):
+   ```yaml
+   dependencies:
+     firebase_auth: ^4.15.3
+     firebase_storage: ^11.6.0
+     firebase_core: ^2.24.2
+     flutter: 
+       sdk: flutter
+     image_picker: ^1.0.4
+   ```
+
+5. **Usage Patterns**:
+   - Always use try-catch blocks when calling auth methods
+   - Pass BuildContext to enable loading and error dialogs
+   - Check user verification status before allowing access to protected features
+   - Use the provided state getters for reactive UI updates
+
+This implementation provides a robust, production-ready authentication system with comprehensive error handling, proper user feedback, and all requested features.
+*/
