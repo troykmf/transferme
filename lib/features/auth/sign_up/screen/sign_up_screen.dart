@@ -8,6 +8,8 @@ import 'package:transferme/core/custom/custom_textfield.dart';
 import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/core/util/app_style.dart';
+import 'package:transferme/core/util/helpers/validation_helper.dart';
+import 'package:transferme/features/auth/provider/auth_provider.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -22,6 +24,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   late final TextEditingController _confirmPasswordController;
 
   final GlobalKey _formKey = GlobalKey<FormState>();
+  bool _isFormValid = false;
 
   @override
   void initState() {
@@ -29,12 +32,55 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
+
+    // Add listeners to update form validity
+    _emailController.addListener(_validateForm);
+    _passwordController.addListener(_validateForm);
+    _confirmPasswordController.addListener(_validateForm);
   }
 
-  void _handleSignUp() {}
+  String? _validateEmail(String value) => ValidationUtils.validateEmail(value);
+  String? _validatePassword(String value) =>
+      ValidationUtils.validatePassword(value);
+  String? _validateConfirmPassword(String value) {
+    if (value.isEmpty) return 'Confirm Password is required';
+    if (value != _passwordController.text.trim()) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
+  void _validateForm() {
+    setState(() {
+      _isFormValid =
+          _validateEmail(_emailController.text.trim()) == null &&
+          _validatePassword(_passwordController.text.trim()) == null &&
+          _validateConfirmPassword(_confirmPasswordController.text.trim()) ==
+              null;
+    });
+  }
+
+  void handleSignUp() {
+    if (_isFormValid) {
+      final authNotifier = ref.read(authProvider.notifier);
+      authNotifier
+          .signUp(
+            context: context,
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          )
+          .then((_) {
+            // No need to manually update state here; AuthNotifier handles it
+          })
+          .catchError((error) {
+            // Error is already handled by AuthNotifier with dialogs
+          });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
     return Scaffold(
       body: SafeArea(
         child: ResponsivePadding(
@@ -67,6 +113,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   text: 'Email Address',
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
+                  validator: (value) => ValidationUtils.validateEmail(value),
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'example@gmail.com',
@@ -128,6 +175,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   ),
                   obscureText: false,
                   autocorrect: false,
+                  validator: ValidationUtils.validatePassword,
                 ),
                 Gap(20),
                 // confirm password textfield
@@ -164,6 +212,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   ),
                   obscureText: false,
                   autocorrect: false,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Confirm Password is required';
+                    }
+                    if (value.trim() != _passwordController.text.trim()) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
                 ),
                 Gap(50),
                 Align(
@@ -171,7 +228,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   child: Column(
                     children: [
                       CustomButton(
-                        onTap: () {},
+                        onTap: () => authState.isLoading ? null : handleSignUp,
                         width: 201,
                         buttonTitle: 'Sign Up',
                       ),
