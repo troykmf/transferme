@@ -228,7 +228,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   child: Column(
                     children: [
                       CustomButton(
-                        onTap: () => authState.isLoading ? null : handleSignUp,
+                        onTap: () {
+                          if (authState.isLoading || !_isFormValid) {
+                            return;
+                          } else {
+                            handleSignUp();
+                          }
+                        },
                         width: 201,
                         buttonTitle: 'Sign Up',
                       ),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,22 +14,17 @@ class AuthState {
   final bool isLoading;
   final String? errorMessage;
 
-  AuthState({
-    this.currentUser,
-    this.isLoading = false,
-    this.errorMessage,
-  });
+  AuthState({this.currentUser, this.isLoading = false, this.errorMessage});
 
   AuthState copyWith({
     UserModel? currentUser,
     bool? isLoading,
     String? errorMessage,
-  }) =>
-      AuthState(
-        currentUser: currentUser ?? this.currentUser,
-        isLoading: isLoading ?? this.isLoading,
-        errorMessage: errorMessage ?? this.errorMessage,
-      );
+  }) => AuthState(
+    currentUser: currentUser ?? this.currentUser,
+    isLoading: isLoading ?? this.isLoading,
+    errorMessage: errorMessage ?? this.errorMessage,
+  );
 }
 
 class AuthNotifier extends StateNotifier<AuthState> {
@@ -53,9 +50,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
       if (e is AuthException) {
         state = state.copyWith(errorMessage: e.message, isLoading: false);
         showErrorDialog(context, e.message, e.stackTrace);
+        log(e.stackTrace.toString());
       } else {
-        state = state.copyWith(errorMessage: 'An unexpected error occurred', isLoading: false);
-        showErrorDialog(context, 'An unexpected error occurred', StackTrace.current);
+        state = state.copyWith(
+          errorMessage: 'An unexpected error occurred',
+          isLoading: false,
+        );
+        log(StackTrace.current.toString());
+        showErrorDialog(
+          context,
+          'An unexpected error occurred',
+          StackTrace.current,
+        );
       }
     }
   }
@@ -82,15 +88,27 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(currentUser: userModel, isLoading: false);
       }
       Navigator.pop(context); // Close the profile completion screen
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile completed successfully'), backgroundColor: Colors.green));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Profile completed successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
     } catch (e) {
       Navigator.pop(context);
       if (e is AuthException) {
         state = state.copyWith(errorMessage: e.message, isLoading: false);
         showErrorDialog(context, e.message, e.stackTrace);
       } else {
-        state = state.copyWith(errorMessage: 'An unexpected error occurred', isLoading: false);
-        showErrorDialog(context, 'An unexpected error occurred', StackTrace.current);
+        state = state.copyWith(
+          errorMessage: 'An unexpected error occurred',
+          isLoading: false,
+        );
+        showErrorDialog(
+          context,
+          'An unexpected error occurred',
+          StackTrace.current,
+        );
       }
     }
   }
@@ -116,8 +134,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(errorMessage: e.message, isLoading: false);
         showErrorDialog(context, e.message, e.stackTrace);
       } else {
-        state = state.copyWith(errorMessage: 'An unexpected error occurred', isLoading: false);
-        showErrorDialog(context, 'An unexpected error occurred', StackTrace.current);
+        state = state.copyWith(
+          errorMessage: 'An unexpected error occurred',
+          isLoading: false,
+        );
+        showErrorDialog(
+          context,
+          'An unexpected error occurred',
+          StackTrace.current,
+        );
       }
     }
   }
@@ -132,7 +157,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Success'),
-          content: const Text('Verification email sent. Please check your inbox.'),
+          content: const Text(
+            'Verification email sent. Please check your inbox.',
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -148,8 +175,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(errorMessage: e.message, isLoading: false);
         showErrorDialog(context, e.message, e.stackTrace);
       } else {
-        state = state.copyWith(errorMessage: 'An unexpected error occurred', isLoading: false);
-        showErrorDialog(context, 'An unexpected error occurred', StackTrace.current);
+        state = state.copyWith(
+          errorMessage: 'An unexpected error occurred',
+          isLoading: false,
+        );
+        showErrorDialog(
+          context,
+          'An unexpected error occurred',
+          StackTrace.current,
+        );
       }
     }
   }
@@ -163,22 +197,43 @@ class AuthNotifier extends StateNotifier<AuthState> {
       showLoadingDialog(context);
       User? currentUser = _authRemoteDataSource.currentUser;
       if (currentUser == null) {
-        throw AuthException.fromFirebase(Exception('No user signed in'), StackTrace.current);
+        throw AuthException.fromFirebase(
+          Exception('No user signed in'),
+          StackTrace.current,
+        );
       }
-      String? profilePictureUrl = await _authRemoteDataSource.uploadProfilePicture(image, currentUser.uid);
-      UserModel updatedUser = (state.currentUser ?? UserModel(id: 0, firstName: '', lastName: '')).copyWith(profilePicture: profilePictureUrl);
-      await _authRemoteDataSource.firestore.collection('users').doc(currentUser.uid).update({'profilePicture': profilePictureUrl});
+      String? profilePictureUrl = await _authRemoteDataSource
+          .uploadProfilePicture(image, currentUser.uid);
+      UserModel updatedUser =
+          (state.currentUser ?? UserModel(id: 0, firstName: '', lastName: ''))
+              .copyWith(profilePicture: profilePictureUrl);
+      await _authRemoteDataSource.firestore
+          .collection('users')
+          .doc(currentUser.uid)
+          .update({'profilePicture': profilePictureUrl});
       state = state.copyWith(currentUser: updatedUser, isLoading: false);
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Profile picture uploaded'), backgroundColor: Colors.green));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Profile picture uploaded'),
+          backgroundColor: Colors.green,
+        ),
+      );
     } catch (e) {
       Navigator.pop(context);
       if (e is AuthException) {
         state = state.copyWith(errorMessage: e.message, isLoading: false);
         showErrorDialog(context, e.message, e.stackTrace);
       } else {
-        state = state.copyWith(errorMessage: 'An unexpected error occurred', isLoading: false);
-        showErrorDialog(context, 'An unexpected error occurred', StackTrace.current);
+        state = state.copyWith(
+          errorMessage: 'An unexpected error occurred',
+          isLoading: false,
+        );
+        showErrorDialog(
+          context,
+          'An unexpected error occurred',
+          StackTrace.current,
+        );
       }
     }
   }
@@ -197,15 +252,25 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(errorMessage: e.message, isLoading: false);
         showErrorDialog(context, e.message, e.stackTrace);
       } else {
-        state = state.copyWith(errorMessage: 'An unexpected error occurred', isLoading: false);
-        showErrorDialog(context, 'An unexpected error occurred', StackTrace.current);
+        state = state.copyWith(
+          errorMessage: 'An unexpected error occurred',
+          isLoading: false,
+        );
+        showErrorDialog(
+          context,
+          'An unexpected error occurred',
+          StackTrace.current,
+        );
       }
     }
   }
 
   Future<UserModel> _fetchUserFromFirestore(String uid) async {
     try {
-      DocumentSnapshot doc = await _authRemoteDataSource.firestore.collection('users').doc(uid).get();
+      DocumentSnapshot doc = await _authRemoteDataSource.firestore
+          .collection('users')
+          .doc(uid)
+          .get();
       return UserModel.fromJson(doc.data() as Map<String, dynamic>);
     } catch (e) {
       throw AuthException.fromFirebase(e, StackTrace.current);
@@ -221,7 +286,11 @@ void showLoadingDialog(BuildContext context) {
   );
 }
 
-void showErrorDialog(BuildContext context, String message, StackTrace? stackTrace) {
+void showErrorDialog(
+  BuildContext context,
+  String message,
+  StackTrace? stackTrace,
+) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -232,8 +301,12 @@ void showErrorDialog(BuildContext context, String message, StackTrace? stackTrac
         children: [
           Text(message),
           if (stackTrace != null) ...[
-            const SizedBox(height: 10),
-            Text('Stack Trace: $stackTrace', style: const TextStyle(fontSize: 12, color: Colors.red)),
+            // const SizedBox(height: 10),
+            // log('Stack Trace: $stackTrace'),
+            // Text(
+            //   'Stack Trace: $stackTrace',
+            //   style: const TextStyle(fontSize: 12, color: Colors.red),
+            // ),
           ],
         ],
       ),
@@ -248,5 +321,6 @@ void showErrorDialog(BuildContext context, String message, StackTrace? stackTrac
 }
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier(AuthRemoteDataSource());
+  final authRemoteDataSource = AuthRemoteDataSource();
+  return AuthNotifier(authRemoteDataSource);
 });
