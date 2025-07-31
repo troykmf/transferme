@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -9,7 +10,8 @@ import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/core/util/app_style.dart';
 import 'package:transferme/core/util/helpers/validation_helper.dart';
-import 'package:transferme/features/auth/provider/auth_provider.dart';
+import 'package:transferme/features/auth/data/provider/auth_provider.dart';
+import 'package:transferme/features/auth/sign_in/login_screen.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -22,6 +24,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
   late final TextEditingController _confirmPasswordController;
+  late TapGestureRecognizer _textRecognizer;
 
   final GlobalKey _formKey = GlobalKey<FormState>();
   bool _isFormValid = false;
@@ -37,6 +40,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     _emailController.addListener(_validateForm);
     _passwordController.addListener(_validateForm);
     _confirmPasswordController.addListener(_validateForm);
+
+    _textRecognizer = TapGestureRecognizer()
+      ..onTap = () {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false,
+        );
+      };
   }
 
   String? _validateEmail(String value) => ValidationUtils.validateEmail(value);
@@ -114,30 +126,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) => ValidationUtils.validateEmail(value),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    hintText: 'example@gmail.com',
-                    hintStyle: mediumText(
-                      13,
-                      AppColor.textLightGreyColor,
-                      null,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: ResponsiveHelper.height(10),
-                    ),
-                    border: InputBorder.none,
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: AppColor.textLightGreyColor,
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: AppColor.primaryColor,
-                        // width: 0.5,
-                      ),
-                    ),
-                  ),
+                  hintText: 'example@gmail.com',
                   obscureText: false,
                   autocorrect: false,
                 ),
@@ -147,30 +136,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   text: 'Password',
                   controller: _passwordController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.visibility_off,
-                        size: 15,
-                        color: AppColor.textLightGreyColor,
-                      ),
-                    ),
-                    isDense: true,
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: ResponsiveHelper.height(10),
-                    ),
-                    border: InputBorder.none,
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: AppColor.textLightGreyColor,
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: AppColor.primaryColor,
-                        // width: 0.5,
-                      ),
+                  suffixIcon: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.visibility_off,
+                      size: 15,
+                      color: AppColor.textLightGreyColor,
                     ),
                   ),
                   obscureText: false,
@@ -183,31 +154,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   text: 'Confirm Password',
                   controller: _confirmPasswordController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.visibility_off,
-                        size: 15,
-                        color: AppColor.textLightGreyColor,
-                      ),
-                    ),
-                    isDense: true,
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: ResponsiveHelper.height(10),
-                    ),
-                    border: InputBorder.none,
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: AppColor.textLightGreyColor,
-                        // width: 0.5,
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: AppColor.primaryColor,
-                        // width: 0.5,
-                      ),
+                  suffixIcon: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.visibility_off,
+                      size: 15,
+                      color: AppColor.textLightGreyColor,
                     ),
                   ),
                   obscureText: false,
@@ -249,6 +201,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           children: [
                             TextSpan(text: 'Already have an account? '),
                             TextSpan(
+                              recognizer: _textRecognizer,
                               text: 'Login',
                               style: mediumText(
                                 13,

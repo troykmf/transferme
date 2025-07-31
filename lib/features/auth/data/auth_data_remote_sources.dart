@@ -32,11 +32,51 @@ class AuthRemoteDataSource {
     }
   }
 
+  // Future<void> completeProfile({
+  //   required String firstName,
+  //   required String lastName,
+  //   String? phoneNumber,
+  //   String? profilePicture,
+  // }) async {
+  //   try {
+  //     User? currentUser = firebaseAuth.currentUser;
+  //     if (currentUser == null) {
+  //       throw AuthException.fromFirebase(
+  //         Exception('No user signed in'),
+  //         StackTrace.current,
+  //       );
+  //     }
+
+  //     String? profilePictureUrl;
+  //     if (profilePicture != null) {
+  //       profilePictureUrl = await uploadProfilePicture(
+  //         profilePicture,
+  //         currentUser.uid,
+  //       );
+  //     }
+
+  //     await firestore
+  //         .collection('users')
+  //         .doc(currentUser.uid)
+  //         .update(
+  //           UserModel(
+  //             id: currentUser.uid.hashCode,
+  //             firstName: firstName,
+  //             lastName: lastName,
+  //             profilePicture: profilePictureUrl,
+  //             phoneNumber: phoneNumber,
+  //           ).toJson(),
+  //         );
+  //   } catch (e, stackTrace) {
+  //     throw AuthException.fromFirebase(e, stackTrace);
+  //   }
+  // }
+
   Future<void> completeProfile({
     required String firstName,
     required String lastName,
     String? phoneNumber,
-    XFile? profilePicture,
+    String? profilePicture,
   }) async {
     try {
       User? currentUser = firebaseAuth.currentUser;
@@ -44,14 +84,6 @@ class AuthRemoteDataSource {
         throw AuthException.fromFirebase(
           Exception('No user signed in'),
           StackTrace.current,
-        );
-      }
-
-      String? profilePictureUrl;
-      if (profilePicture != null) {
-        profilePictureUrl = await uploadProfilePicture(
-          profilePicture,
-          currentUser.uid,
         );
       }
 
@@ -63,7 +95,7 @@ class AuthRemoteDataSource {
               id: currentUser.uid.hashCode,
               firstName: firstName,
               lastName: lastName,
-              profilePicture: profilePictureUrl,
+              profilePicture: profilePicture,
               phoneNumber: phoneNumber,
             ).toJson(),
           );

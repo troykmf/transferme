@@ -7,7 +7,7 @@ import 'package:transferme/core/util/app_style.dart';
 class ResponsiveContainer extends StatelessWidget {
   final double width;
   final double height;
-  final Widget child;
+  final Widget? child;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final Decoration? decoration;
@@ -17,7 +17,7 @@ class ResponsiveContainer extends StatelessWidget {
     super.key,
     required this.width,
     required this.height,
-    required this.child,
+    this.child,
     this.padding,
     this.margin,
     this.decoration,
