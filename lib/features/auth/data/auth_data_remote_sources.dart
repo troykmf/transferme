@@ -3,9 +3,14 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:transferme/core/network/auth_exceptions.dart';
 import 'package:transferme/features/auth/data/models/user_model.dart';
+import 'package:transferme/features/auth/sign_in/login_screen.dart';
+import 'package:transferme/features/main_page.dart';
+import 'package:transferme/features/splash_screen/splash_screen.dart';
 
 class AuthRemoteDataSource {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -148,4 +153,51 @@ class AuthRemoteDataSource {
   }
 
   User? get currentUser => firebaseAuth.currentUser;
+
+  Stream<bool> isSignedIn() {
+    return FirebaseAuth.instance.authStateChanges().map((user) => user != null);
+  }
+}
+
+//isSignedInProvider
+final isSignedInProvider = StreamProvider<bool>((ref) {
+  return AuthRemoteDataSource().isSignedIn();
+  // return FirebaseService.instance.isSignedIn();
+});
+
+//isSIgnedIn Page
+class AuthPersister extends ConsumerStatefulWidget {
+  const AuthPersister({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _AuthPersisterState();
+}
+
+class _AuthPersisterState extends ConsumerState<AuthPersister> {
+  bool isLoading = true;
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, watch, child) {
+        final isSignedIn = ref.watch(isSignedInProvider);
+        return isSignedIn.when(
+          data: (isSignedIn) {
+            if (isLoading) {
+              return SplashScreen();
+            }
+
+            if (isSignedIn) {
+              // User is signed in, navigate to the main page
+              return const MainPage();
+            } else {
+              // return const WelcomeScreen();
+              return LoginScreen();
+            }
+          },
+          loading: () => SplashScreen(),
+          error: (e, s) => const Scaffold(body: Center(child: Text('Error'))),
+        );
+      },
+    );
+  }
 }

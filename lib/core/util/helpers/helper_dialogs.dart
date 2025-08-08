@@ -61,4 +61,43 @@ class HelperDialogs {
       ),
     );
   }
+
+  void showHelperDialog(
+    BuildContext context,
+    String title,
+    String subText,
+    VoidCallback onPressed,
+  ) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(subText),
+            // if (error.code.isNotEmpty) ...[
+            //   SizedBox(height: 8),
+            //   Text(
+            //     subText,
+            //     style: TextStyle(fontSize: 12, color: Colors.grey),
+            //   ),
+            // ],
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: onPressed, child: Text('OK')),
+          // TextButton(
+          //   onPressed: () {
+          //     Navigator.of(context).pop();
+          //     // Show detailed error for debugging
+          //     debugPrint(error.message);
+          //   },
+          //   child: Text('Debug Info'),
+          // ),
+        ],
+      ),
+    );
+  }
 }

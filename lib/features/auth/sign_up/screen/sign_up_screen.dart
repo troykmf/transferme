@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -135,7 +137,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 CustomTextfield(
                   text: 'Password',
                   controller: _passwordController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.text,
                   suffixIcon: IconButton(
                     onPressed: () {},
                     icon: Icon(
@@ -146,14 +148,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   ),
                   obscureText: false,
                   autocorrect: false,
-                  validator: ValidationUtils.validatePassword,
+                  validator: (value) => ValidationUtils.validatePassword(value),
                 ),
                 Gap(20),
                 // confirm password textfield
                 CustomTextfield(
                   text: 'Confirm Password',
                   controller: _confirmPasswordController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.text,
                   suffixIcon: IconButton(
                     onPressed: () {},
                     icon: Icon(
@@ -182,6 +184,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       CustomButton(
                         onTap: () {
                           if (authState.isLoading || !_isFormValid) {
+                            log('Cannot sign up, form is invalid or loading');
                             return;
                           } else {
                             handleSignUp();

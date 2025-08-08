@@ -8,11 +8,13 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:transferme/core/network/auth_exceptions.dart';
 import 'package:transferme/core/util/app_color.dart';
+import 'package:transferme/core/util/helpers/helper_dialogs.dart';
 import 'package:transferme/core/util/helpers/validation_helper.dart';
 import 'package:transferme/features/auth/data/auth_data_remote_sources.dart';
 import 'package:transferme/features/auth/data/models/user_model.dart';
 import 'package:transferme/features/auth/profile.dart/complete_profile_screen.dart';
 import 'package:transferme/features/auth/sign_in/login_screen.dart';
+import 'package:transferme/features/main_page.dart';
 
 class AuthState {
   final UserModel? currentUser;
@@ -33,7 +35,7 @@ class AuthState {
     UserModel? currentUser,
     bool? isLoading,
     String? errorMessage,
-     XFile? croppedImage,
+    XFile? croppedImage,
     String? profileImagePath,
   }) => AuthState(
     currentUser: currentUser ?? this.currentUser,
@@ -59,12 +61,26 @@ class AuthNotifier extends StateNotifier<AuthState> {
       showLoadingDialog(context);
       await _authRemoteDataSource.signUp(email: email, password: password);
       Navigator.pop(context);
-      // Navigate to profile completion screen
-      Navigator.pushAndRemoveUntil(
+      HelperDialogs().showHelperDialog(
         context,
-        MaterialPageRoute(builder: (context) => CompleteProfileScreen()),
-        (route) => false,
+        "Verify Email",
+        'Sign up successful. Please verify your mail',
+        () {
+          if (mounted) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+              (route) => false,
+            );
+          }
+        },
       );
+      // Navigate to profile completion screen
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => LoginScreen()),
+      //   (route) => false,
+      // );
       state = state.copyWith(isLoading: false);
     } catch (e) {
       Navigator.pop(context);
@@ -95,7 +111,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: source);
-      
+
       if (image == null) return;
 
       // Crop the image
@@ -125,7 +141,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         // Validate file size (2MB - 15MB)
         final bytes = await croppedFile.readAsBytes();
         final sizeInMB = bytes.length / (1024 * 1024);
-        
+
         if (sizeInMB < 2) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -135,7 +151,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
           );
           return;
         }
-        
+
         if (sizeInMB > 15) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -157,21 +173,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error selecting image: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error selecting image: $e')));
     }
   }
 
   // NEW: Clear selected image
   void clearSelectedImage() {
-    state = state.copyWith(
-      croppedImage: null,
-      profileImagePath: null,
-    );
+    state = state.copyWith(croppedImage: null, profileImagePath: null);
   }
 
-   Future<void> completeProfile({
+  Future<void> completeProfile({
     required BuildContext context,
     required String firstName,
     required String lastName,
@@ -181,10 +194,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (error != null) {
       state = state.copyWith(errorMessage: error, isLoading: false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.redAccent,
-          content: Text(error),
-        ),
+        SnackBar(backgroundColor: Colors.redAccent, content: Text(error)),
       );
       return;
     }
@@ -192,9 +202,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       showLoadingDialog(context);
-      
+
       String? profilePictureUrl;
-      
+
       // Upload profile picture if one was selected and cropped
       if (state.croppedImage != null) {
         User? currentUser = _authRemoteDataSource.currentUser;
@@ -215,12 +225,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
 
       log('Profile successfully completed');
-      
+
       User? user = _authRemoteDataSource.currentUser;
       if (user != null) {
         UserModel userModel = await _fetchUserFromFirestore(user.uid);
         state = state.copyWith(
-          currentUser: userModel, 
+          currentUser: userModel,
           isLoading: false,
           croppedImage: null, // Clear after successful upload
           profileImagePath: null,
@@ -238,10 +248,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       if (e is AuthException) {
         state = state.copyWith(errorMessage: e.message, isLoading: false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.redAccent,
-            content: Text(e.message),
-          ),
+          SnackBar(backgroundColor: Colors.redAccent, content: Text(e.message)),
         );
         log(e.code);
         log(e.message);
@@ -261,7 +268,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
       }
     }
   }
-
 
   // Future<void> completeProfile({
   //   required BuildContext context,
@@ -352,6 +358,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(currentUser: userModel, isLoading: false);
       }
       Navigator.pop(context);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => MainPage()),
+        (route) => false,
+      );
+      log('Login successful');
     } catch (e) {
       Navigator.pop(context);
       if (e is AuthException) {

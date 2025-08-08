@@ -31,17 +31,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
           child: Row(
             children: [
-              ResponsiveContainer(
-                decoration: BoxDecoration(
-                  color: AppColor.primaryColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                width: 50,
-                height: 25,
-                child: Icon(
-                  Icons.arrow_back,
-                  color: AppColor.whiteColor,
-                  size: 15,
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: ResponsiveContainer(
+                  decoration: BoxDecoration(
+                    color: AppColor.primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  width: 50,
+                  height: 25,
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: AppColor.whiteColor,
+                    size: 15,
+                  ),
                 ),
               ),
               gap ?? Gap(65),

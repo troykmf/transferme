@@ -52,14 +52,34 @@ class ValidationUtils {
       return 'Password is required';
     }
 
-    if (value.length < 5) {
-      return 'Password must cannot be less than 5 numbers';
-    }
-    if (value.length > 5) {
-      return 'Password must cannot be more than 5 numbers';
+    String password = value.trim();
+
+    // Check minimum length
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long';
     }
 
-    return null;
+    // Check for at least one uppercase letter
+    if (!RegExp(r'[A-Z]').hasMatch(password)) {
+      return 'Password must contain at least 1 uppercase letter';
+    }
+
+    // Check for at least one lowercase letter
+    if (!RegExp(r'[a-z]').hasMatch(password)) {
+      return 'Password must contain at least 1 lowercase letter';
+    }
+
+    // Check for at least one number
+    if (!RegExp(r'[0-9]').hasMatch(password)) {
+      return 'Password must contain at least 1 number';
+    }
+
+    // Check for at least one special character
+    if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password)) {
+      return 'Password must contain at least 1 special character';
+    }
+
+    return null; // Password is valid
   }
 
   // Custom validation that combines multiple validators
