@@ -10,6 +10,14 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Profile')),
+      body: Center(
+        child: Text(
+          'This is the Profile Page',
+          // style: Theme.of(context).textTheme.headline4,
+        ),
+      ),
+    );
   }
 }

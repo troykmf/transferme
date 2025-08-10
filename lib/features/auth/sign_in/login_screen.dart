@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:transferme/core/custom/custom_app_bar.dart';
 import 'package:transferme/core/custom/custom_app_logo.dart';
 import 'package:transferme/core/custom/custom_button.dart' show CustomButton;
 import 'package:transferme/core/custom/custom_responsive_widgets.dart';
@@ -12,7 +11,6 @@ import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/core/util/app_style.dart';
 import 'package:transferme/core/util/helpers/validation_helper.dart';
 import 'package:transferme/features/auth/data/provider/auth_provider.dart';
-import 'package:transferme/features/auth/sign_in/password_screen.dart';
 import 'package:transferme/features/auth/sign_up/screen/sign_up_screen.dart';
 
 // class LoginScreen extends StatelessWidget {

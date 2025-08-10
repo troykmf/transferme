@@ -10,8 +10,8 @@ class AppTheme {
         secondary: AppColor.secondaryColor,
       ),
       fontFamily: 'Sans Francisco',
-      scaffoldBackgroundColor: AppColor.whiteColor,
-      appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+      scaffoldBackgroundColor: Colors.grey.shade100,
+      appBarTheme: AppBarTheme(backgroundColor: Colors.grey.shade100),
       useMaterial3: true,
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(foregroundColor: AppColor.whiteColor),

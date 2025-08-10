@@ -12,7 +12,12 @@ class AppSvgs {
   static String inactiveHomeIcon = 'assets/svgs/inactive-home.svg';
   static String activeWalletIcon = 'assets/svgs/active-wallet.svg';
   static String inactiveWalletIcon = 'assets/svgs/inactive-wallet.svg';
-  static String activeStatsIcon = 'assets/svgs/active-stats.svg';
-  static String inactiveStatsIcon = 'assets/svgs/inactive-stats.svg';
+  static String activeStatsIcon = 'assets/svgs/active-chart.svg';
+  static String inactiveStatsIcon = 'assets/svgs/inactive-chart.svg';
   static String activeProfileIcon = 'assets/svgs/profile.svg';
+  static String notificationIcon = 'assets/svgs/notification.svg';
+  static String incomingLineCurve = 'assets/svgs/line_curve.svg';
+  static String outgoingLineCurve = 'assets/svgs/a_line_curve.svg';
+  static String arrowSend = 'assets/svgs/arrow-send.svg';
+  static String arrowReceive = 'assets/svgs/arrow-receive.svg';
 }

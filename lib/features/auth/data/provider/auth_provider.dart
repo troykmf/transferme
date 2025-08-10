@@ -12,7 +12,6 @@ import 'package:transferme/core/util/helpers/helper_dialogs.dart';
 import 'package:transferme/core/util/helpers/validation_helper.dart';
 import 'package:transferme/features/auth/data/auth_data_remote_sources.dart';
 import 'package:transferme/features/auth/data/models/user_model.dart';
-import 'package:transferme/features/auth/profile.dart/complete_profile_screen.dart';
 import 'package:transferme/features/auth/sign_in/login_screen.dart';
 import 'package:transferme/features/main_page.dart';
 
