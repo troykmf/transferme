@@ -15,6 +15,7 @@ class TransactionTypeView extends StatelessWidget {
     required this.senderDetail,
     required this.receiverDetail,
     required this.isSenderOrReceiver,
+    required this.arrowType,
   });
 
   final String transactionType;
@@ -22,6 +23,7 @@ class TransactionTypeView extends StatelessWidget {
   final List<SenderDetails> senderDetail;
   final List<ReceiberDetails> receiverDetail;
   final bool isSenderOrReceiver;
+  final String arrowType;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +61,10 @@ class TransactionTypeView extends StatelessWidget {
                 name: isSenderOrReceiver ? sender.name : receiver.name,
                 date: isSenderOrReceiver ? sender.date : receiver.date,
                 amount: isSenderOrReceiver ? sender.amount : receiver.amount,
+                arrowType: arrowType,
+                amountColor: isSenderOrReceiver
+                    ? AppColor.secondaryColor
+                    : AppColor.primaryColor,
               );
             },
             itemCount: isSenderOrReceiver

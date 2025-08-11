@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:transferme/core/custom/custom_responsive_widgets.dart';
-import 'package:transferme/core/util/app_assets.dart';
 import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/core/util/app_style.dart';
@@ -14,12 +13,16 @@ class TransactionTypeContainerWidget extends StatelessWidget {
     required this.name,
     required this.date,
     required this.amount,
+    required this.arrowType,
+    required this.amountColor,
   });
 
   final String lineChartName;
   final String name;
   final String date;
   final String amount;
+  final String arrowType;
+  final Color amountColor;
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +59,12 @@ class TransactionTypeContainerWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    SvgPicture.asset(AppSvgs.arrowReceive),
+                    SvgPicture.asset(arrowType),
 
                     Text(
                       '+ \$$amount',
                       // '+ \$54.23',
-                      style: extraBoldText(17, AppColor.secondaryColor, -1),
+                      style: extraBoldText(17, amountColor, -1),
                     ),
                   ],
                 ),

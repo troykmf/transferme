@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
                 senderDetail: senderDetail,
                 receiverDetail: receiverDetail,
                 isSenderOrReceiver: true,
+                arrowType: AppSvgs.arrowReceive,
               ),
               Gap(20),
               TransactionTypeView(
@@ -63,6 +64,7 @@ class _HomePageState extends State<HomePage> {
                 senderDetail: senderDetail,
                 receiverDetail: receiverDetail,
                 isSenderOrReceiver: false,
+                arrowType: AppSvgs.arrowSend,
               ),
             ],
           ),
