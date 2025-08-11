@@ -45,6 +45,8 @@ class _CurvedBottomNavigationBarState extends State<CurvedBottomNavigationBar> {
       // Simple placeholder content for demonstration
       body: _pages[_selectedIndex],
 
+      backgroundColor: Colors.transparent,
+
       // The custom bottom navigation bar with bottom padding
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(

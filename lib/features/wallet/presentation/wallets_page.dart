@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:transferme/core/custom/custom_button.dart';
 import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/core/util/app_style.dart';
+import 'package:transferme/features/wallet/data/cash_back_data_model.dart';
+import 'package:transferme/features/wallet/widgets/cash_back_view.dart';
 import 'package:transferme/features/wallet/widgets/tab_bar_widget.dart';
 
 class WalletsPage extends StatefulWidget {
@@ -13,6 +15,7 @@ class WalletsPage extends StatefulWidget {
 }
 
 class _WalletsPageState extends State<WalletsPage> {
+  final List<CashBackDataModel> cashBackList = cashBackDataList;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +39,7 @@ class _WalletsPageState extends State<WalletsPage> {
                 buttonTitle: 'Add Card',
               ),
             ),
+            CashBackView(cashBackList: cashBackList),
           ],
         ),
       ),

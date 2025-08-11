@@ -5,8 +5,9 @@ import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/features/wallet/data/currency_data_model.dart';
 
 class CurrencyTabBar extends StatefulWidget {
+  const CurrencyTabBar({super.key});
   @override
-  _CurrencyTabBarState createState() => _CurrencyTabBarState();
+  State<CurrencyTabBar> createState() => _CurrencyTabBarState();
 }
 
 class _CurrencyTabBarState extends State<CurrencyTabBar> {
@@ -147,5 +148,3 @@ class _CurrencyTabBarState extends State<CurrencyTabBar> {
     );
   }
 }
-
-

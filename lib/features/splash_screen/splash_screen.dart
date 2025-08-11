@@ -7,7 +7,6 @@ import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/core/util/app_style.dart';
 import 'package:transferme/core/util/app_theme.dart';
-import 'package:transferme/features/onboarding/welcome_screen.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -21,17 +20,17 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   // void initState() {
   //   super.initState();
 
-  @override
-  void initState() {
-    super.initState();
-    // Navigate to the main screen after 3 seconds
-    Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-      );
-    });
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Navigate to the main screen after 3 seconds
+  //   Future.delayed(const Duration(seconds: 5), () {
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
