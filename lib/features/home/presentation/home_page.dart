@@ -10,7 +10,10 @@ import 'package:transferme/features/home/data/sender_details.dart';
 import 'package:transferme/features/home/widgets/transaction_type_widget.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  // const HomePage({super.key});
+  final VoidCallback? onMenuPressed;
+
+  const HomePage({super.key, this.onMenuPressed});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -23,50 +26,59 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Icon(Icons.menu),
+        title: GestureDetector(
+          onTap: widget.onMenuPressed, // Trigger drawer opening
+          child: const Icon(
+            Icons.menu,
+            color: Color(0xFF5B67CA), // Primary color
+          ),
+        ),
         actions: [SvgPicture.asset(AppSvgs.notificationIcon)],
         actionsPadding: EdgeInsets.only(right: 16.0),
       ),
+
       body: SafeArea(
         child: ResponsivePadding(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gap(20),
-              ResponsivePadding(
-                left: 16.0,
-                child: Text(
-                  'Current Balance',
-                  style: headlineText(13, AppColor.textLightGreyColor, null),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Gap(20),
+                ResponsivePadding(
+                  left: 16.0,
+                  child: Text(
+                    'Current Balance',
+                    style: headlineText(13, AppColor.textLightGreyColor, null),
+                  ),
                 ),
-              ),
 
-              ResponsivePadding(
-                left: 16.0,
-                child: Text(
-                  '\$285,378.20',
-                  style: extraBoldText(27, AppColor.primaryColor, -1),
+                ResponsivePadding(
+                  left: 16.0,
+                  child: Text(
+                    '\$285,378.20',
+                    style: extraBoldText(27, AppColor.primaryColor, -1),
+                  ),
                 ),
-              ),
-              Gap(20),
-              TransactionTypeView(
-                transactionType: 'Incoming Transactions',
-                lineChartName: AppSvgs.incomingLineCurve,
-                senderDetail: senderDetail,
-                receiverDetail: receiverDetail,
-                isSenderOrReceiver: true,
-                arrowType: AppSvgs.arrowReceive,
-              ),
-              Gap(20),
-              TransactionTypeView(
-                transactionType: 'Outgoing Transactions',
-                lineChartName: AppSvgs.outgoingLineCurve,
-                senderDetail: senderDetail,
-                receiverDetail: receiverDetail,
-                isSenderOrReceiver: false,
-                arrowType: AppSvgs.arrowSend,
-              ),
-            ],
+                Gap(20),
+                TransactionTypeView(
+                  transactionType: 'Incoming Transactions',
+                  lineChartName: AppSvgs.incomingLineCurve,
+                  senderDetail: senderDetail,
+                  receiverDetail: receiverDetail,
+                  isSenderOrReceiver: true,
+                  arrowType: AppSvgs.arrowReceive,
+                ),
+                Gap(20),
+                TransactionTypeView(
+                  transactionType: 'Outgoing Transactions',
+                  lineChartName: AppSvgs.outgoingLineCurve,
+                  senderDetail: senderDetail,
+                  receiverDetail: receiverDetail,
+                  isSenderOrReceiver: false,
+                  arrowType: AppSvgs.arrowSend,
+                ),
+              ],
+            ),
           ),
         ),
       ),

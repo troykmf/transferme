@@ -48,13 +48,13 @@ class CashBackTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Center(
-              child: Icon(icon, color: AppColor.whiteColor, size: 189),
+              child: Icon(icon, color: AppColor.whiteColor, size: 18),
             ),
           ),
           title: Text(
             title,
             style: extraBoldText(
-              15,
+              14,
               AppColor.blackColor,
               -.05,
             ).copyWith(fontWeight: FontWeight.w700),

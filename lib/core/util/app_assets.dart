@@ -20,4 +20,7 @@ class AppSvgs {
   static String outgoingLineCurve = 'assets/svgs/a_line_curve.svg';
   static String arrowSend = 'assets/svgs/arrow-send.svg';
   static String arrowReceive = 'assets/svgs/arrow-receive.svg';
+  static String transferIcon = 'assets/svgs/transfer-icon.svg';
+  static String settingsIcon = 'assets/svgs/settings.svg';
+  static String logoutIcon = 'assets/svgs/logout.svg';
 }
