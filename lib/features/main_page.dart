@@ -277,12 +277,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
       bottomNavigationBar: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        height: _isDrawerOpen
-            ? 0
-            : 80 +
-                  MediaQuery.of(context)
-                      .padding
-                      .bottom, // Add padding.bottom for safe area (e.g., iPhone notch)
+        height: _isDrawerOpen ? 0 : 80 + MediaQuery.of(context).padding.bottom,
         child: OverflowBox(
           // Allows the child to overflow when sliding, preventing clipping
           alignment: Alignment.topCenter,
@@ -296,10 +291,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
               duration: const Duration(milliseconds: 300),
               child: CurvedBottomNavigationBar(
                 selectedIndex: _selectedIndex,
-                // Handle navigation item selection
+
                 onItemSelected: (index) {
                   if (index == 3) {
-                    // Navigate to profile page instead of showing in bottom nav
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -307,7 +301,6 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       ),
                     );
                   } else {
-                    // Update selected index for other tabs
                     setState(() {
                       _selectedIndex = index;
                     });
@@ -395,14 +388,6 @@ class CurvedBottomNavigationBar extends StatelessWidget {
     );
   }
 
-  /// Helper method to build individual navigation items
-  ///
-  /// Parameters:
-  /// - [activeIcon]: Widget to show when item is selected
-  /// - [inactiveIcon]: Widget to show when item is not selected
-  /// - [index]: Position index of this navigation item
-  /// - [selectedIndex]: Currently selected item index
-  /// - [onTap]: Callback function for handling taps
   Widget _buildNavItem({
     required Widget? activeIcon,
     required Widget? inactiveIcon,
@@ -415,14 +400,13 @@ class CurvedBottomNavigationBar extends StatelessWidget {
 
     return Expanded(
       child: GestureDetector(
-        onTap: () => onTap(index), // Handle tap and pass index
+        onTap: () => onTap(index),
         child: AnimatedContainer(
           margin: const EdgeInsets.only(left: 25, right: 25, top: 10),
           duration: const Duration(
             milliseconds: 200,
           ), // Smooth selection animation
           height: double.infinity,
-          // Background styling - purple when selected, transparent when not
           decoration: BoxDecoration(
             color: selected ? const Color(0xFF5B67CA) : Colors.transparent,
             borderRadius: const BorderRadius.only(
@@ -433,8 +417,8 @@ class CurvedBottomNavigationBar extends StatelessWidget {
           // Center the icon within the container
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              // Show appropriate icon based on selection state
+              padding: const EdgeInsets.only(bottom: 15.0),
+
               child: selected ? activeIcon : inactiveIcon,
             ),
           ),

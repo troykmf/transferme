@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/core/util/app_responsive_helper.dart';
@@ -18,6 +19,7 @@ class CustomTextfield extends StatefulWidget {
     this.validator,
     this.suffixIcon,
     this.hintText,
+    this.inputFormatters,
   });
 
   final String text;
@@ -31,6 +33,7 @@ class CustomTextfield extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final FormFieldValidator<String?>? validator;
   final Widget? suffixIcon;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -71,6 +74,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         ),
         Gap(5),
         TextFormField(
+          inputFormatters: widget.inputFormatters,
           focusNode: _focusNode,
           controller: widget.controller,
           keyboardType: widget.keyboardType,

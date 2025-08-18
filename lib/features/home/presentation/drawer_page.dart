@@ -167,12 +167,11 @@ class DrawerPage extends StatelessWidget {
                   delay: 600,
                 ),
 
-                // Push logout button to bottom
                 const Spacer(),
 
                 // LOGOUT BUTTON - Fixed at bottom
                 Container(
-                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+                      margin: const EdgeInsets.fromLTRB(50, 0, 50, 30),
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         onPressed: () {
@@ -231,16 +230,11 @@ class DrawerPage extends StatelessWidget {
     required int delay,
   }) {
     return Container(
-          height: 50,
+          height: 47,
           margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           child: ListTile(
             // Leading icon with styled container
             leading: SvgPicture.asset(icon),
-            //  Icon(
-            //   icon,
-            //   color: const Color(0xFF5B67CA), // Primary color for icon
-            //   size: 24,
-            // ),
             // Menu item title
             title: Text(
               title,
