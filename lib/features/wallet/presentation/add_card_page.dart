@@ -7,6 +7,7 @@ import 'package:transferme/core/custom/custom_responsive_widgets.dart';
 import 'package:transferme/core/custom/custom_textfield.dart';
 import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/core/util/app_style.dart';
+import 'package:transferme/features/wallet/presentation/add_card_color_page.dart';
 import 'package:transferme/features/wallet/presentation/wallets_page.dart';
 
 class AddCardPage extends StatelessWidget {
@@ -29,7 +30,15 @@ class AddCardPage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       persistentFooterAlignment: AlignmentDirectional.center,
       persistentFooterButtons: [
-        CustomButton(onTap: () {}, width: 201, buttonTitle: 'Confirm'),
+        CustomButton(
+          onTap: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (context) => AddCardColorPage()));
+          },
+          width: 201,
+          buttonTitle: 'Confirm',
+        ),
       ],
       appBar: CustomAppBar(appBarTitle: 'Add Card'),
       body: SafeArea(
