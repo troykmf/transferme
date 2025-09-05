@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:transferme/core/util/app_assets.dart';
 import 'package:transferme/core/util/app_color.dart';
+import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/core/util/app_style.dart';
 
 class CashBackTile extends StatelessWidget {
@@ -22,9 +23,10 @@ class CashBackTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveHelper.isMobile;
     return Container(
       height: 80,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 20, vertical: 8),
       decoration: BoxDecoration(
         color: AppColor.whiteColor,
         borderRadius: BorderRadius.circular(20),
@@ -41,8 +43,8 @@ class CashBackTile extends StatelessWidget {
       child: Center(
         child: ListTile(
           leading: Container(
-            width: 57,
-            height: 57,
+            width: isMobile ? 57 : 57,
+            height: isMobile ? 57 : 57,
             decoration: BoxDecoration(
               color: color,
               borderRadius: BorderRadius.circular(20),
@@ -54,14 +56,19 @@ class CashBackTile extends StatelessWidget {
           title: Text(
             title,
             style: extraBoldText(
-              14,
+              isMobile ? 14 : 9,
               AppColor.blackColor,
               -.05,
             ).copyWith(fontWeight: FontWeight.w700),
           ),
-          subtitle: Text(time, style: smallText(10, AppColor.blackColor, -.05)),
+          subtitle: Text(
+            time,
+            style: smallText(isMobile ? 10 : 7, AppColor.blackColor, -.05),
+          ),
           trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: isMobile
+                ? MainAxisAlignment.center
+                : MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SvgPicture.asset(
@@ -71,7 +78,14 @@ class CashBackTile extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
               ),
-              Text(price, style: extraBoldText(14, AppColor.primaryColor, -.5)),
+              Text(
+                price,
+                style: extraBoldText(
+                  isMobile ? 14 : 9,
+                  AppColor.primaryColor,
+                  -.5,
+                ),
+              ),
             ],
           ),
         ),

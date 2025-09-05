@@ -12,6 +12,7 @@ import 'package:transferme/core/util/helpers/helper_dialogs.dart';
 import 'package:transferme/core/util/helpers/validation_helper.dart';
 import 'package:transferme/features/auth/data/auth_data_remote_sources.dart';
 import 'package:transferme/features/auth/data/models/user_model.dart';
+import 'package:transferme/features/auth/profile.dart/complete_profile_screen.dart';
 import 'package:transferme/features/auth/sign_in/login_screen.dart';
 import 'package:transferme/features/main_page.dart';
 
@@ -68,7 +69,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
           if (mounted) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
+              MaterialPageRoute(
+                builder: (context) => CompleteProfileScreen(),
+                // LoginScreen(),
+              ),
               (route) => false,
             );
           }
@@ -142,22 +146,26 @@ class AuthNotifier extends StateNotifier<AuthState> {
         final sizeInMB = bytes.length / (1024 * 1024);
 
         if (sizeInMB < 2) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              backgroundColor: Colors.redAccent,
-              content: Text('Image size must be at least 2MB'),
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.redAccent,
+                content: Text('Image size must be at least 2MB'),
+              ),
+            );
+          }
           return;
         }
 
         if (sizeInMB > 15) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              backgroundColor: Colors.redAccent,
-              content: Text('Image size must not exceed 15MB'),
-            ),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                backgroundColor: Colors.redAccent,
+                content: Text('Image size must not exceed 15MB'),
+              ),
+            );
+          }
           return;
         }
 
@@ -167,14 +175,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
           profileImagePath: croppedFile.path,
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Cropping cancelled or failed')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Cropping cancelled or failed')),
+          );
+        }
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error selecting image: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error selecting image: $e')));
+      }
     }
   }
 
@@ -363,6 +375,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         (route) => false,
       );
       log('Login successful');
+      state = state.copyWith(isLoading: false, errorMessage: null);
     } catch (e) {
       Navigator.pop(context);
       if (e is AuthException) {
@@ -534,10 +547,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       showLoadingDialog(context);
+      Future.delayed(Duration(seconds: 2));
       await _authRemoteDataSource.logout();
       state = state.copyWith(currentUser: null, isLoading: false);
       Navigator.pop(context);
-      Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        (route) => false,
+      );
+      log('Log out successful!');
     } catch (e) {
       Navigator.pop(context);
       if (e is AuthException) {

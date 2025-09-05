@@ -34,6 +34,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveHelper.isMobile;
     return ResponsiveContainer(
       width: ResponsiveHelper.designWidth,
       height: ResponsiveHelper.designHeight,
@@ -45,27 +46,41 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           Spacer(),
           SizedBox(
             width: ResponsiveHelper.width(170),
-            height: ResponsiveHelper.height(90),
+            height: isMobile
+                ? ResponsiveHelper.height(90)
+                : ResponsiveHelper.height(105),
             child: CustomAppLogo(
-              primaryColorContainerWidth: ResponsiveHelper.width(83),
-              primaryColorContainerHeight: ResponsiveHelper.height(83),
-              secondaryColorContainerWidth: ResponsiveHelper.width(83),
-              secondaryColorContainerHeight: ResponsiveHelper.height(83),
+              primaryColorContainerWidth: isMobile
+                  ? ResponsiveHelper.width(83)
+                  : ResponsiveHelper.width(83),
+              primaryColorContainerHeight: isMobile
+                  ? ResponsiveHelper.height(83)
+                  : ResponsiveHelper.height(83),
+              secondaryColorContainerWidth: isMobile
+                  ? ResponsiveHelper.width(83)
+                  : ResponsiveHelper.width(83),
+              secondaryColorContainerHeight: isMobile
+                  ? ResponsiveHelper.height(83)
+                  : ResponsiveHelper.height(83),
             ),
           ),
-          Gap(30),
+          isMobile ? Gap(30) : Gap(30),
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
               children: [
                 TextSpan(
                   text: 'TransferMe',
-                  style: headlineText(50, AppColor.primaryColor, -2),
+                  style: headlineText(
+                    isMobile ? 50 : 40,
+                    AppColor.primaryColor,
+                    -2,
+                  ),
                 ),
                 TextSpan(
                   text: '\nYour Best Money Transfer Partner.',
                   style: mediumText(
-                    13,
+                    isMobile ? 13 : 10,
                     AppColor.primaryColor,
                     -1,
                   ).copyWith(height: 2),
@@ -79,7 +94,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             bottom: 16,
             child: RichText(
               text: TextSpan(
-                style: regularText(14, AppColor.primaryColor, null),
+                style: regularText(
+                  isMobile ? 14 : 9,
+                  AppColor.primaryColor,
+                  null,
+                ),
                 children: [
                   TextSpan(
                     text: 'Secured by ',

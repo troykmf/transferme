@@ -82,6 +82,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                   // button
                   CustomButton(
+
+                    
                     onTap: () {
                       _nextPage();
                     },

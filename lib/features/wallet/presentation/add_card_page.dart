@@ -6,6 +6,7 @@ import 'package:transferme/core/custom/custom_button.dart';
 import 'package:transferme/core/custom/custom_responsive_widgets.dart';
 import 'package:transferme/core/custom/custom_textfield.dart';
 import 'package:transferme/core/util/app_color.dart';
+import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/core/util/app_style.dart';
 import 'package:transferme/features/wallet/presentation/add_card_color_page.dart';
 import 'package:transferme/features/wallet/presentation/wallets_page.dart';
@@ -26,15 +27,16 @@ class AddCardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveHelper.isMobile;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       persistentFooterAlignment: AlignmentDirectional.center,
       persistentFooterButtons: [
         CustomButton(
           onTap: () {
-            Navigator.of(
-              context,
-            ).push(MaterialPageRoute(builder: (context) => AddCardColorPage()));
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => AddCardColorScreen()),
+            );
           },
           width: 201,
           buttonTitle: 'Confirm',
@@ -50,7 +52,11 @@ class AddCardPage extends StatelessWidget {
               Gap(20),
               Text(
                 'To add a new card, please fill out the fields below carefully to add card successfully.',
-                style: smallText(10, AppColor.textLightGreyColor, null),
+                style: smallText(
+                  isMobile ? 10 : 8,
+                  AppColor.textLightGreyColor,
+                  null,
+                ),
                 textAlign: TextAlign.start,
               ),
               Gap(35),
@@ -66,7 +72,7 @@ class AddCardPage extends StatelessWidget {
                   CardNumberFormatter(),
                 ],
               ),
-              Gap(10),
+              isMobile ? Gap(10) : Gap(20),
               CustomTextfield(
                 text: "Holder's Name",
                 controller: holderNameController,
@@ -74,7 +80,7 @@ class AddCardPage extends StatelessWidget {
                 obscureText: false,
                 autocorrect: false,
               ),
-              Gap(10),
+              isMobile ? Gap(10) : Gap(20),
               CustomTextfield(
                 text: 'Expiry Date ',
                 controller: expiryDateController,
@@ -82,7 +88,7 @@ class AddCardPage extends StatelessWidget {
                 obscureText: false,
                 autocorrect: false,
               ),
-              Gap(10),
+              isMobile ? Gap(10) : Gap(20),
               CustomTextfield(
                 text: 'CVV ',
                 controller: cvvController,

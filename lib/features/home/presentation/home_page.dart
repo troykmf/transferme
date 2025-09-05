@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:transferme/core/custom/custom_responsive_widgets.dart';
+// import 'package:transferme/core/custom/custom_responsive_widgets.dart';
 import 'package:transferme/core/util/app_assets.dart';
 import 'package:transferme/core/util/app_color.dart';
 import 'package:transferme/core/util/app_style.dart';
@@ -9,8 +9,86 @@ import 'package:transferme/features/home/data/receiber_details.dart';
 import 'package:transferme/features/home/data/sender_details.dart';
 import 'package:transferme/features/home/widgets/transaction_type_widget.dart';
 
+// class HomePage extends StatefulWidget {
+//   // const HomePage({super.key});
+//   final VoidCallback? onMenuPressed;
+
+//   const HomePage({super.key, this.onMenuPressed});
+
+//   @override
+//   State<HomePage> createState() => _HomePageState();
+// }
+
+// class _HomePageState extends State<HomePage> {
+//   final List<ReceiberDetails> receiverDetail = receiverDetails;
+//   final List<SenderDetails> senderDetail = senderDetails;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: GestureDetector(
+//           onTap: widget.onMenuPressed, // Trigger drawer opening
+//           child: const Icon(
+//             Icons.menu,
+//             color: Color(0xFF5B67CA), // Primary color
+//           ),
+//         ),
+//         actions: [SvgPicture.asset(AppSvgs.notificationIcon)],
+//         actionsPadding: EdgeInsets.only(right: 16.0),
+//       ),
+
+//       body: SafeArea(
+//         child: ResponsivePadding(
+//           child: SingleChildScrollView(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Gap(20),
+//                 ResponsivePadding(
+//                   left: 16.0,
+//                   child: Text(
+//                     'Current Balance',
+//                     style: headlineText(13, AppColor.textLightGreyColor, null),
+//                   ),
+//                 ),
+
+//                 ResponsivePadding(
+//                   left: 16.0,
+//                   child: Text(
+//                     '\$285,378.20',
+//                     style: extraBoldText(27, AppColor.primaryColor, -1),
+//                   ),
+//                 ),
+//                 Gap(20),
+//                 TransactionTypeView(
+//                   transactionType: 'Incoming Transactions',
+//                   lineChartName: AppSvgs.incomingLineCurve,
+//                   senderDetail: senderDetail,
+//                   receiverDetail: receiverDetail,
+//                   isSenderOrReceiver: true,
+//                   arrowType: AppSvgs.arrowReceive,
+//                 ),
+//                 Gap(20),
+//                 TransactionTypeView(
+//                   transactionType: 'Outgoing Transactions',
+//                   lineChartName: AppSvgs.outgoingLineCurve,
+//                   senderDetail: senderDetail,
+//                   receiverDetail: receiverDetail,
+//                   isSenderOrReceiver: false,
+//                   arrowType: AppSvgs.arrowSend,
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+import 'package:transferme/core/util/app_responsive_helper.dart';
+
 class HomePage extends StatefulWidget {
-  // const HomePage({super.key});
   final VoidCallback? onMenuPressed;
 
   const HomePage({super.key, this.onMenuPressed});
@@ -22,44 +100,62 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<ReceiberDetails> receiverDetail = receiverDetails;
   final List<SenderDetails> senderDetail = senderDetails;
+
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveHelper.isMobile;
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: widget.onMenuPressed, // Trigger drawer opening
-          child: const Icon(
+          onTap: widget.onMenuPressed,
+          child: Icon(
             Icons.menu,
-            color: Color(0xFF5B67CA), // Primary color
+            color: Color(0xFF5B67CA),
+            size: ResponsiveHelper.sp(isMobile ? 24 : 16),
           ),
         ),
-        actions: [SvgPicture.asset(AppSvgs.notificationIcon)],
-        actionsPadding: EdgeInsets.only(right: 16.0),
+        actions: [
+          SvgPicture.asset(
+            AppSvgs.notificationIcon,
+            width: ResponsiveHelper.size(isMobile ? 24 : 16),
+            height: ResponsiveHelper.size(isMobile ? 24 : 16),
+          ),
+        ],
+        actionsPadding: EdgeInsets.only(right: ResponsiveHelper.width(16)),
       ),
-
       body: SafeArea(
-        child: ResponsivePadding(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: ResponsiveHelper.width(isMobile ? 14 : 6),
+          ),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Gap(20),
-                ResponsivePadding(
-                  left: 16.0,
+                Gap(ResponsiveHelper.height(isMobile ? 15 : 20)),
+                Padding(
+                  padding: EdgeInsets.only(left: ResponsiveHelper.width(16)),
                   child: Text(
                     'Current Balance',
-                    style: headlineText(13, AppColor.textLightGreyColor, null),
+                    style: headlineText(
+                      ResponsiveHelper.sp(isMobile ? 13 : 4),
+                      AppColor.textLightGreyColor,
+                      null,
+                    ),
                   ),
                 ),
-
-                ResponsivePadding(
-                  left: 16.0,
+                Padding(
+                  padding: EdgeInsets.only(left: ResponsiveHelper.width(16)),
                   child: Text(
                     '\$285,378.20',
-                    style: extraBoldText(27, AppColor.primaryColor, -1),
+                    style: extraBoldText(
+                      ResponsiveHelper.sp(isMobile ? 27 : 10),
+                      AppColor.primaryColor,
+                      -1,
+                    ),
                   ),
                 ),
-                Gap(20),
+                Gap(ResponsiveHelper.height(isMobile ? 10 : 20)),
                 TransactionTypeView(
                   transactionType: 'Incoming Transactions',
                   lineChartName: AppSvgs.incomingLineCurve,
@@ -68,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                   isSenderOrReceiver: true,
                   arrowType: AppSvgs.arrowReceive,
                 ),
-                Gap(20),
+                Gap(ResponsiveHelper.height(isMobile ? 20 : 20)),
                 TransactionTypeView(
                   transactionType: 'Outgoing Transactions',
                   lineChartName: AppSvgs.outgoingLineCurve,

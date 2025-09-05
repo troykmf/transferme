@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:transferme/core/custom/custom_button.dart';
 import 'package:transferme/core/util/app_color.dart';
+import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/core/util/app_style.dart';
 import 'package:transferme/features/wallet/data/cash_back_data_model.dart';
 import 'package:transferme/features/wallet/presentation/add_card_page.dart';
@@ -46,11 +47,12 @@ class _WalletsPageState extends State<WalletsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveHelper.isMobile;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Card Details',
-          style: headlineText(17, AppColor.blackColor, -0.5),
+          style: headlineText(isMobile ? 17 : 12, AppColor.blackColor, -0.5),
         ),
         centerTitle: true,
       ),
@@ -76,7 +78,7 @@ class _WalletsPageState extends State<WalletsPage> {
                     );
                   }
                 },
-                width: 153,
+                width: isMobile ? 153 : 120,
                 buttonTitle: 'Add Card',
               ),
             ),

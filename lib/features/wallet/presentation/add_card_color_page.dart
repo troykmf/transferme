@@ -1,399 +1,272 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+// import 'package:gap/gap.dart';
 import 'package:transferme/core/custom/custom_app_bar.dart';
 import 'package:transferme/core/custom/custom_responsive_widgets.dart';
 import 'package:transferme/core/util/app_color.dart';
+import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/core/util/app_style.dart';
 
-class AddCardColorPage extends StatefulWidget {
-  const AddCardColorPage({super.key});
+class AddCardColorScreen extends StatefulWidget {
+  const AddCardColorScreen({super.key});
 
   @override
-  State<AddCardColorPage> createState() => _AddCardColorPageState();
+  State<AddCardColorScreen> createState() => _CardColorScreenState();
 }
 
-class _AddCardColorPageState extends State<AddCardColorPage> {
+class _CardColorScreenState extends State<AddCardColorScreen> {
+  Color selectedColor = const Color(
+    0xFF7DD3E8,
+  ); // Light blue (current card color)
+
+  final List<Color> colorOptions = [
+    const Color(0xFF7DD3E8), // Light blue
+    const Color(0xFF4CAF50), // Green
+    const Color(0xFF2196F3), // Blue
+    const Color(0xFFFF9800), // Orange
+    const Color(0xFFFF5722), // Red-orange
+    const Color(0xFF00BCD4), // Cyan
+    const Color(0xFFF44336), // Red
+    const Color(0xFFFFEB3B), // Yellow
+    const Color(0xFF9E9E9E), // Grey
+    const Color(0xFF424242), // Dark grey
+    const Color(0xFF000000), // Black
+    const Color(0xFF1A237E), // Dark blue
+    const Color(0xFF0D47A1), // Navy blue
+    const Color(0xFF6A1B9A), // Purple
+    const Color(0xFF7986CB), // Light purple
+  ];
+
   @override
   Widget build(BuildContext context) {
-    int selectedColorIndex = 0; // Default to light blue (first color)
+    final isMobile = ResponsiveHelper.isMobile;
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: CustomAppBar(appBarTitle: 'Card Color'),
       body: SafeArea(
         child: ResponsivePadding(
-          horizontal: 16,
           vertical: 16,
+          horizontal: 30,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 32),
+
+              // Description
               Text(
-                'Please select a color to differentiate this card \nfrom the other cards you have attached and \norganize your cards better.',
-                style: smallText(11.5, AppColor.textLightGreyColor, -.2),
+                'Please, select a color to differentiat this card from other cards you have attached and organize your cards better.',
+                style: mediumText(
+                  isMobile ? 11.5 : 8,
+                  AppColor.textLightGreyColor,
+                  -.2,
+                ).copyWith(),
                 textAlign: TextAlign.start,
               ),
-              Gap(35),
-              // Add your color selection widgets here
-              // For example, you can use a GridView to display color options
-              cardDesignWidget(selectedColorIndex),
-              Gap(30),
-              colorSelectionGrid(selectedColorIndex),
+              const SizedBox(height: 32),
+
+              // Credit Card Preview
+              Container(
+                width: isMobile
+                    ? double.infinity
+                    : MediaQuery.of(context).size.width * 0.6,
+                height: isMobile ? 171 : 220,
+                decoration: BoxDecoration(
+                  color: selectedColor,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Anderson',
+                          style: headlineText(
+                            isMobile ? 11 : 9,
+                            AppColor.whiteColor,
+                            null,
+                          ),
+                        ),
+                        Text(
+                          'A Debit Card',
+                          style: headlineText(
+                            isMobile ? 10 : 8,
+                            AppColor.whiteColor,
+                            null,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 13),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '2423   3581   9503   2412',
+                          style: extraBoldText(
+                            isMobile ? 14 : 11,
+                            AppColor.whiteColor,
+                            null,
+                          ),
+                        ),
+
+                        Text(
+                          '21 / 24',
+                          style: extraBoldText(
+                            isMobile ? 14 : 11,
+                            AppColor.whiteColor,
+                            null,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const Spacer(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Your Balance',
+                          style: mediumText(
+                            isMobile ? 10 : 7.54,
+                            AppColor.whiteColor,
+                            null,
+                          ),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '\$3,100.30',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: isMobile ? 24 : 26,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              'Visa',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: isMobile ? 16 : 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: isMobile ? 10 : 40),
+
+              // Color Grid
+              Expanded(
+                child: GridView.builder(
+                  padding: EdgeInsets.all(isMobile ? 30 : 130),
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: colorOptions.length + 1, // +1 for the plus button
+                  itemBuilder: (context, index) {
+                    if (index == colorOptions.length) {
+                      // Plus button
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(
+                            color: const Color(0xFF2196F3),
+                            width: 2,
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Color(0xFF2196F3),
+                          size: 24,
+                        ),
+                      );
+                    }
+
+                    final color = colorOptions[index];
+                    final isSelected = color == selectedColor;
+
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedColor = color;
+                        });
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: color,
+                          shape: BoxShape.circle,
+                        ),
+                        child: isSelected
+                            ? const Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 20,
+                              )
+                            : null,
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              // Confirm Button
+              SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Handle confirm action
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Card color confirmed!'),
+                        backgroundColor: selectedColor,
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF5C6BC0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    'Confirm',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
-
-  Widget cardDesignWidget(int selectedColorIndex) {
-    return // Card preview
-    Container(
-      width: double.infinity,
-      height: 200,
-      decoration: BoxDecoration(
-        color: cardColors[selectedColorIndex],
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Anderson',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  'A Debit Card',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 20),
-
-            Text(
-              '2423 3581 9503 2412',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                letterSpacing: 2,
-              ),
-            ),
-
-            SizedBox(height: 8),
-
-            Text(
-              '21 / 24',
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
-                fontSize: 16,
-              ),
-            ),
-
-            Spacer(),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Your Balance',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
-                        fontSize: 12,
-                      ),
-                    ),
-                    Text(
-                      '\$3,100.30',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  'Visa',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget colorSelectionGrid(int selectedColorIndex) {
-    return // Color selection grid
-    GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        mainAxisSpacing: 20,
-        crossAxisSpacing: 20,
-        childAspectRatio: 1,
-      ),
-      itemCount: cardColors.length + 1, // +1 for the add button
-      itemBuilder: (context, index) {
-        if (index == cardColors.length) {
-          // Add button
-          return GestureDetector(
-            onTap: () {
-              // Handle add new color
-            },
-            child: Container(
-              height: 44,
-              width: 44,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                shape: BoxShape.circle,
-                border: Border.all(color: Color(0xFF3B82F6), width: 2),
-              ),
-              child: Icon(Icons.add, color: Color(0xFF3B82F6), size: 24),
-            ),
-          );
-        }
-
-        return GestureDetector(
-          // onTap: onTap,
-          onTap: () {
-            setState(() {
-              selectedColorIndex = index;
-            });
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: cardColors[index],
-              shape: BoxShape.circle,
-              border: selectedColorIndex == index
-                  ? Border.all(color: Colors.white, width: 3)
-                  : null,
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
-
-// class CardColorScreen extends StatefulWidget {
-//   @override
-//   _CardColorScreenState createState() => _CardColorScreenState();
-// }
-
-// class _CardColorScreenState extends State<CardColorScreen> {
-//   int selectedColorIndex = 0; // Default to light blue (first color)
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Color(0xFF2D2D2D),
-//       body: SafeArea(
-//         child: Column(
-//           children: [
-//             // Header
-//             Container(
-//               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-//               child: Row(
-//                 children: [
-//                   Container(
-//                     width: 40,
-//                     height: 40,
-//                     decoration: BoxDecoration(
-//                       color: Color(0xFF5B6BCF),
-//                       borderRadius: BorderRadius.circular(20),
-//                     ),
-//                     child: Icon(
-//                       Icons.arrow_back,
-//                       color: Colors.white,
-//                       size: 20,
-//                     ),
-//                   ),
-//                   SizedBox(width: 16),
-//                   Text(
-//                     'Card Color',
-//                     style: TextStyle(
-//                       color: Colors.white,
-//                       fontSize: 24,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-
-//             SizedBox(height: 20),
-
-//             // Description text
-//             Padding(
-//               padding: EdgeInsets.symmetric(horizontal: 24),
-//               child: Text(
-//                 'Please, select a color to differentiat this card from other cards you have attached and organize your cards better.',
-//                 style: TextStyle(
-//                   color: Color(0xFF9CA3AF),
-//                   fontSize: 16,
-//                   height: 1.4,
-//                 ),
-//               ),
-//             ),
-
-//             SizedBox(height: 40),
-
-//             SizedBox(height: 50),
-
-//             // Color selection grid
-//             Padding(
-//               padding: EdgeInsets.symmetric(horizontal: 24),
-//               child: GridView.builder(
-//                 shrinkWrap: true,
-//                 physics: NeverScrollableScrollPhysics(),
-//                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//                   crossAxisCount: 4,
-//                   mainAxisSpacing: 20,
-//                   crossAxisSpacing: 20,
-//                 ),
-//                 itemCount: cardColors.length + 1, // +1 for the add button
-//                 itemBuilder: (context, index) {
-//                   if (index == cardColors.length) {
-//                     // Add button
-//                     return GestureDetector(
-//                       onTap: () {
-//                         // Handle add new color
-//                       },
-//                       child: Container(
-//                         decoration: BoxDecoration(
-//                           color: Colors.transparent,
-//                           shape: BoxShape.circle,
-//                           border: Border.all(
-//                             color: Color(0xFF3B82F6),
-//                             width: 2,
-//                           ),
-//                         ),
-//                         child: Icon(
-//                           Icons.add,
-//                           color: Color(0xFF3B82F6),
-//                           size: 24,
-//                         ),
-//                       ),
-//                     );
-//                   }
-
-//                   return GestureDetector(
-//                     onTap: () {
-//                       setState(() {
-//                         selectedColorIndex = index;
-//                       });
-//                     },
-//                     child: Container(
-//                       decoration: BoxDecoration(
-//                         color: cardColors[index],
-//                         shape: BoxShape.circle,
-//                         border: selectedColorIndex == index
-//                             ? Border.all(
-//                                 color: Colors.white,
-//                                 width: 3,
-//                               )
-//                             : null,
-//                       ),
-//                     ),
-//                   );
-//                 },
-//               ),
-//             ),
-
-//             Spacer(),
-
-//             // Confirm button
-//             Padding(
-//               padding: EdgeInsets.all(24),
-//               child: Container(
-//                 width: double.infinity,
-//                 height: 56,
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     // Handle confirm
-//                     ScaffoldMessenger.of(context).showSnackBar(
-//                       SnackBar(
-//                         content: Text('Color confirmed!'),
-//                         backgroundColor: cardColors[selectedColorIndex],
-//                       ),
-//                     );
-//                   },
-//                   style: ElevatedButton.styleFrom(
-//                     backgroundColor: Color(0xFF5B6BCF),
-//                     foregroundColor: Colors.white,
-//                     elevation: 0,
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(28),
-//                     ),
-//                   ),
-//                   child: Text(
-//                     'Confirm',
-//                     style: TextStyle(
-//                       fontSize: 18,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// // Main app wrapper
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Card Color Selection',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//         visualDensity: VisualDensity.adaptivePlatformDensity,
-//       ),
-//       home: CardColorScreen(),
-//       debugShowCheckedModeBanner: false,
-//     );
-//   }
-// }
-
-final List<Color> cardColors = [
-  Color(0xFF7DD3FC), // Light blue (default)
-  Color(0xFF22C55E), // Green
-  Color(0xFF3B82F6), // Blue
-  Color(0xFFF97316), // Orange
-  Color(0xFFEF4444), // Red-orange
-  Color(0xFF0EA5E9), // Sky blue
-  Color(0xFFDC2626), // Red
-  Color(0xFFFBBF24), // Yellow
-  Color(0xFF6B7280), // Gray
-  Color(0xFF374151), // Dark gray
-  Color(0xFF000000), // Black
-  Color(0xFF1E3A8A), // Navy blue
-  Color(0xFF1E40AF), // Dark blue
-  Color(0xFF7C3AED), // Purple
-  Color(0xFF8B5CF6), // Light purple
-];

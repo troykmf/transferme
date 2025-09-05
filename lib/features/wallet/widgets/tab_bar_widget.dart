@@ -2,6 +2,7 @@ import 'package:transferme/core/util/app_assets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:transferme/core/util/app_color.dart';
+import 'package:transferme/core/util/app_responsive_helper.dart';
 import 'package:transferme/features/wallet/data/currency_data_model.dart';
 
 class CurrencyTabBar extends StatefulWidget {
@@ -36,23 +37,26 @@ class _CurrencyTabBarState extends State<CurrencyTabBar> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = ResponsiveHelper.isMobile;
     return Container(
-      height: 80,
-      width: 356,
+      height: ResponsiveHelper.isMobile ? 80 : 100,
+      width: ResponsiveHelper.isMobile ? 356 : 500,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: AppColor.whiteColor,
       ),
       // padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: isMobile
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.spaceEvenly,
         children: currencies.asMap().entries.map((entry) {
           int index = entry.key;
           CurrencyData currency = entry.value;
 
           return Container(
-            height: 56,
-            width: 96,
+            height: ResponsiveHelper.isMobile ? 56 : 70,
+            width: ResponsiveHelper.isMobile ? 96 : 120,
             margin: EdgeInsets.symmetric(horizontal: 6),
             decoration: BoxDecoration(
               color: selectedTab == index
@@ -79,7 +83,7 @@ class _CurrencyTabBarState extends State<CurrencyTabBar> {
                 });
               },
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(ResponsiveHelper.isMobile ? 10 : 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +96,7 @@ class _CurrencyTabBarState extends State<CurrencyTabBar> {
                           currency.name,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12,
+                            fontSize: ResponsiveHelper.isMobile ? 12 : 16,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -102,8 +106,8 @@ class _CurrencyTabBarState extends State<CurrencyTabBar> {
                           children: [
                             selectedTab == index
                                 ? SvgPicture.asset(
-                                    width: 18,
-                                    height: 18,
+                                    width: isMobile ? 18 : 22,
+                                    height: isMobile ? 18 : 22,
                                     AppSvgs.arrowReceive,
                                     colorFilter: ColorFilter.mode(
                                       AppColor.whiteColor,
@@ -111,8 +115,8 @@ class _CurrencyTabBarState extends State<CurrencyTabBar> {
                                     ),
                                   )
                                 : SvgPicture.asset(
-                                    width: 18,
-                                    height: 18,
+                                    width: isMobile ? 18 : 22,
+                                    height: isMobile ? 18 : 22,
                                     AppSvgs.arrowSend,
                                     colorFilter: ColorFilter.mode(
                                       AppColor.whiteColor,
@@ -130,7 +134,7 @@ class _CurrencyTabBarState extends State<CurrencyTabBar> {
                               currency.value,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: isMobile ? 12 : 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

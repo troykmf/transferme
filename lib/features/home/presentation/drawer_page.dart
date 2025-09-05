@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:transferme/core/util/app_assets.dart';
 import 'package:transferme/core/util/app_color.dart';
+import 'package:transferme/features/auth/data/provider/auth_provider.dart';
+import 'package:transferme/features/test/image_test.dart';
 
-class DrawerPage extends StatelessWidget {
+class DrawerPage extends ConsumerWidget {
   // Callback function to close the drawer
   final VoidCallback? onClose;
 
   const DrawerPage({super.key, this.onClose});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       // Set drawer width to 80% of screen width
       width: MediaQuery.of(context).size.width * 0.75,
@@ -162,7 +165,9 @@ class DrawerPage extends StatelessWidget {
                   title: 'Settings',
                   onTap: () {
                     onClose?.call(); // Close drawer
-                    // TODO: Navigate to settings page
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                    );
                   },
                   delay: 600,
                 ),
@@ -175,9 +180,11 @@ class DrawerPage extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          onClose?.call(); // Close drawer first
+                          // onClose?.call(); // Close drawer first
+                          // Navigator.of
                           _showLogoutDialog(
                             context,
+                            ref,
                           ); // Show confirmation dialog
                         },
                         icon: SvgPicture.asset(
@@ -277,7 +284,7 @@ class DrawerPage extends StatelessWidget {
 
   /// Shows a confirmation dialog when user tries to logout
   /// Includes Cancel and Logout options for user safety
-  void _showLogoutDialog(BuildContext context) {
+  void _showLogoutDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -294,8 +301,7 @@ class DrawerPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context); // Close dialog
-                // TODO: Implement actual logout logic here
-                // Example: AuthService.logout(), clear user data, navigate to login
+                ref.read(authProvider.notifier).logout(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF5B67CA),

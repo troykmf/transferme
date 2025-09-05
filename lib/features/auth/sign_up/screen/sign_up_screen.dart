@@ -95,10 +95,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
+    final isMobile = ResponsiveHelper.isMobile;
     return Scaffold(
       body: SafeArea(
         child: ResponsivePadding(
-          horizontal: 20,
+          horizontal: isMobile ? 20 : 20,
+          vertical: isMobile ? 0 : 15,
           child: Form(
             key: _formKey,
             child: Column(
@@ -109,7 +111,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   height: ResponsiveHelper.height(60),
                   child: CustomAppLogo(
                     firstContainerLeftPosition: 0,
-                    secondContainerRightPosition: 55,
+                    secondContainerRightPosition: isMobile ? 55 : 35,
                     primaryColorContainerWidth: ResponsiveHelper.width(47),
                     primaryColorContainerHeight: ResponsiveHelper.height(47),
                     secondaryColorContainerWidth: ResponsiveHelper.width(47),
@@ -119,7 +121,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 Gap(10),
                 Text(
                   'Sign Up',
-                  style: extraBoldText(35, AppColor.blackColor, -1.5),
+                  style: extraBoldText(
+                    isMobile ? 35 : 17,
+                    AppColor.blackColor,
+                    -1.5,
+                  ),
                 ),
                 Gap(20),
                 // email textfield
@@ -142,7 +148,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     onPressed: () {},
                     icon: Icon(
                       Icons.visibility_off,
-                      size: 15,
+                      size: isMobile ? 15 : 20,
                       color: AppColor.textLightGreyColor,
                     ),
                   ),
@@ -160,7 +166,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     onPressed: () {},
                     icon: Icon(
                       Icons.visibility_off,
-                      size: 15,
+                      size: isMobile ? 15 : 20,
                       color: AppColor.textLightGreyColor,
                     ),
                   ),
@@ -190,14 +196,14 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             handleSignUp();
                           }
                         },
-                        width: 201,
+                        width: isMobile ? 201 : 140,
                         buttonTitle: 'Sign Up',
                       ),
                       Gap(30),
                       RichText(
                         text: TextSpan(
                           style: mediumText(
-                            13,
+                            isMobile ? 13 : 9,
                             AppColor.textLightGreyColor,
                             null,
                           ),
@@ -207,7 +213,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                               recognizer: _textRecognizer,
                               text: 'Login',
                               style: mediumText(
-                                13,
+                                isMobile ? 13 : 9,
                                 AppColor.primaryColor,
                                 null,
                               ).copyWith(decoration: TextDecoration.underline),
