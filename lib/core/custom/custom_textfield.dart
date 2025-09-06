@@ -128,6 +128,8 @@ class CustomTextfield extends StatefulWidget {
     this.suffixIcon,
     this.hintText,
     this.inputFormatters,
+    this.textAlign,
+    this.textAlignVertical,
   });
 
   final String text;
@@ -142,6 +144,8 @@ class CustomTextfield extends StatefulWidget {
   final FormFieldValidator<String?>? validator;
   final Widget? suffixIcon;
   final List<TextInputFormatter>? inputFormatters;
+  final TextAlign? textAlign;
+  final TextAlignVertical? textAlignVertical;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -183,6 +187,8 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         ),
         isMobile ? Gap(5) : Gap(8),
         TextFormField(
+          textAlignVertical: widget.textAlignVertical,
+          textAlign: widget.textAlign ?? TextAlign.start,
           inputFormatters: widget.inputFormatters,
           focusNode: _focusNode,
           controller: widget.controller,
